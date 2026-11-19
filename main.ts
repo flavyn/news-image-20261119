@@ -63,7 +63,8 @@ try {
 
   const destination = resolve(outputDir, 'entry.png');
   writeFileSync(destination, bytes);
-  console.log(`Wrote ${destination} (${bytes.length} bytes)`);
+  if (!readFileSync(destination).equals(bytes)) throw new Error('Output bytes differ');
+  console.log(`Wrote ${destination} (${isPng ? 'PNG' : 'JPEG'}, ${width}x${height}, ${bytes.length} bytes)`);
 } catch (error) {
   console.error(`Error: ${error instanceof Error ? error.message : String(error)}`);
   process.exitCode = 1;
